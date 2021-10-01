@@ -19,7 +19,7 @@ app.get('/products', (req, res) => {
     if (error) {
       res.set('status', 500).send(error)
     } else {
-      res.set('status', 200).send(data)
+      res.set('status', 200).send(data.rows)
     }
   })
 })
