@@ -23,8 +23,15 @@ const connection = client.connect((err) => {
 // })
 
 module.exports = {
-  query: (text, callback) => {
-    return client.query(text, callback)
+  query: (text, params, callback) => {
+    return client.query(text, params, (error, data) => {
+      if (error) {
+        console.log('error in client.query', error)
+        callback(error)
+      } else {
+        callback(null, data)
+      }
+    })
   },
 }
 
