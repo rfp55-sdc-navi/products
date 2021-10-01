@@ -13,18 +13,20 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
-// app.get('/products/:product_id', (req, res) => {
-//   var text = '';
-//   var params = '';
-//   console.log(req.params)
-//   // db.query(text, (error, data) => {
-//   //   if (error) {
-//   //     res.set('status', 500).send(error)
-//   //   } else {
-//   //     res.set('status', 200).send(data.rows)
-//   //   }
-//   // })
-// })
+app.get('/products/:product_id', (req, res) => {
+
+  var id = req.params.product_id;
+  var params = [id];
+  var text = 'SELECT * FROM products WHERE id = $1';
+
+  db.query(text, params, (error, data) => {
+    if (error) {
+      res.set('status', 500).send(error)
+    } else {
+      res.set('status', 200).send(data.rows)
+    }
+  })
+})
 
 app.get('/products', (req, res) => {
 
