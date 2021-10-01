@@ -1,0 +1,44 @@
+const config = require('../config.js');
+
+const { Pool, Client } = require('pg')
+
+const client = new Client({
+  host: 'localhost',
+  user: 'caitlinkinney',
+  database: 'products',
+  port: 5432,
+})
+
+const connection = client.connect((err) => {
+  if (err) {
+    console.error('DB connection -', err.stack)
+  } else {
+    console.log('connected to DB')
+  }
+})
+
+// client.query('SELECT NOW()', (err, res) => {
+//   console.log(err, res)
+//   client.end()
+// })
+
+module.exports = {
+  query: (text, callback) => {
+    return client.query(text, callback)
+  },
+}
+
+/* example...
+const Pool = require('pg').Pool;
+
+const pool = new Pool({
+  user: 'caitlinkinney',
+  database: 'products',
+  //password?
+  host: 'localhost',
+  port: 5432
+});
+
+module.exports = pool;
+
+*/
