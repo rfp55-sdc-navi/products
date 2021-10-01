@@ -28,12 +28,10 @@ app.get('/', (req, res) => {
 
 app.get('/products', (req, res) => {
 
-
   var count = req.query.count || '5';
   var offset = ((req.query.page - 1) * count) || '0';
   var params = [offset, count]
-  var text = 'SELECT * FROM products OFFSET $1 ROWS FETCH NEXT $2 ROWS ONLY'
-  // var text = 'SELECT * FROM products LIMIT $1';
+  var text = 'SELECT * FROM products ORDER BY id ASC OFFSET $1 ROWS FETCH NEXT $2 ROWS ONLY'
 
   db.query(text, params, (error, data) => {
     if (error) {
