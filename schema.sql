@@ -8,7 +8,7 @@ CREATE TABLE Products (
  slogan VARCHAR (150) NOT NULL,
  description VARCHAR (500) NOT NULL,
  category VARCHAR (60) NOT NULL,
- default_price INTEGER NOT NULL
+ default_price VARCHAR NOT NULL
 );
 
 

@@ -13,16 +13,40 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
+// app.get('/products/:product_id', (req, res) => {
+//   var text = '';
+//   var params = '';
+//   console.log(req.params)
+//   // db.query(text, (error, data) => {
+//   //   if (error) {
+//   //     res.set('status', 500).send(error)
+//   //   } else {
+//   //     res.set('status', 200).send(data.rows)
+//   //   }
+//   // })
+// })
+
 app.get('/products', (req, res) => {
-  var text = 'SELECT * FROM products LIMIT 10';
-  db.query(text, (error, data) => {
+
+
+  var count = req.query.count || '5';
+  var offset = ((req.query.page - 1) * count) || '0';
+  var params = [offset, count]
+  var text = 'SELECT * FROM products OFFSET $1 ROWS FETCH NEXT $2 ROWS ONLY'
+  // var text = 'SELECT * FROM products LIMIT $1';
+
+  db.query(text, params, (error, data) => {
     if (error) {
       res.set('status', 500).send(error)
     } else {
       res.set('status', 200).send(data.rows)
     }
   })
+
 })
+
+
+
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)
