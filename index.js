@@ -42,13 +42,7 @@ app.get('/products/:product_id/styles', (req, res) => {
     id,
     name,
     original_price,
-
-    (select CASE WHEN sale_price = 'null'
-          THEN '0'
-          WHEN sale_price IS NULL
-          THEN '0'
-       END
-    ) AS sale_price,
+    sale_price,
 
     (select CASE WHEN default_style = 0
           THEN 'false' ELSE 'true'
