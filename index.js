@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/products/:product_id/related', (req, res) => {
-  var id = req.params.product_id
+  var id = req.params.product_id;
   var params = [id];
   var text = 'SELECT * FROM related WHERE current_product = $1'
 
@@ -28,11 +28,53 @@ app.get('/products/:product_id/related', (req, res) => {
   })
 })
 
+app.get('/products/:product_id/styles', (req, res) => {
+  var id = req.prams.product_id;
+  var params = [id]
+  var text = 'SELECT * FROM products WHERE id = $1'
+
+  db.query(text, params, (error, data) => {
+    if (error) {
+      res.set('status', 500).send(error)
+    } else {
+      //do something
+    }
+  })
+})
+
 app.get('/products/:product_id', (req, res) => {
 
   var id = req.params.product_id;
   var params = [id];
-  var text = 'SELECT * FROM products WHERE id = $1';
+  // var text = 'SELECT * FROM products WHERE id = $1';
+
+  var text =
+
+  `select json_build_object(
+    'id', products.id,
+    'name', products.name,
+    'slogan', products.slogan,
+    'description', products.description,
+    'category', products.category,
+    'default_price', products.default_price,
+    'features', (SELECT json_agg(row_to_json(features)) FROM (SELECT feature, value FROM "features" where product_id=$1) AS features
+    ))
+    from products
+    WHERE products.id=$1`;
+
+
+
+  // `SELECT json_build_object( \
+  //   "id", products.id, \
+  //   "name", products.name, \
+  //   "slogan", products.slogan,\
+  //   "description", products.description, \
+  //   "category", products.category, \
+  //   "default_price", products.default_price, \
+  //   "features", (SELECT json_agg(row_to_json(features)) FROM (SELECT feature, value FROM "features" where product_id=1) AS features)) \
+  //   from products \
+  //   WHERE products.id=$1`;
+
 
   db.query(text, params, (error, data) => {
     if (error) {
@@ -62,3 +104,9 @@ app.get('/products', (req, res) => {
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)
 })
+
+
+
+
+
+

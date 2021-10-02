@@ -78,7 +78,7 @@ ALTER TABLE styles ADD CONSTRAINT styles_pkey PRIMARY KEY (id);
 ALTER TABLE Features ADD CONSTRAINT Features_product_id_fkey FOREIGN KEY (product_id) REFERENCES Products(id);
 ALTER TABLE cart ADD CONSTRAINT cart_product_id_fkey FOREIGN KEY (product_id) REFERENCES Products(id);
 ALTER TABLE Photos ADD CONSTRAINT Photos_styleId_fkey FOREIGN KEY (styleId) REFERENCES styles(id);
--- ALTER TABLE Related ADD CONSTRAINT Related_current_product_fkey FOREIGN KEY (current_product) REFERENCES Products(id);
+ALTER TABLE Related ADD CONSTRAINT Related_current_product_fkey FOREIGN KEY (current_product) REFERENCES Products(id);
 -- ALTER TABLE Related ADD CONSTRAINT Related_related_product_fkey FOREIGN KEY (related_product) REFERENCES Products(id);
 ALTER TABLE skus ADD CONSTRAINT skus_styleId_fkey FOREIGN KEY (styleId) REFERENCES styles(id);
 ALTER TABLE styles ADD CONSTRAINT styles_product_id_fkey FOREIGN KEY (product_id) REFERENCES Products(id);
