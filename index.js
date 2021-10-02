@@ -29,15 +29,70 @@ app.get('/products/:product_id/related', (req, res) => {
 })
 
 app.get('/products/:product_id/styles', (req, res) => {
-  var id = req.prams.product_id;
+  // console.log(req.params.product_id)
+  var id = req.params.product_id;
   var params = [id]
-  var text = 'SELECT * FROM products WHERE id = $1'
+  var text =
+
+  `select json_build_object(
+    'product_id', id,
+  	'results', (select array_to_json(array_agg(row_to_json(stylesList)))
+    FROM (
+
+      select
+      id,
+      name,
+      original_price,
+
+      (select CASE WHEN sale_price = 'null'
+            THEN '0'
+            WHEN sale_price IS NULL
+            THEN '0'
+         END
+      ) AS sale_price,
+
+      (select CASE WHEN default_style = 0
+            THEN 'false' ELSE 'true'
+          END
+       ) AS default_style,
+
+        (
+          select array_to_json(array_agg(row_to_json(urls)))
+          FROM (
+
+            SELECT thumbnail_url, url
+            FROM photos
+            WHERE styleid=styles.id
+            order by id asc
+
+          ) urls
+
+        ) as photos,
+
+          (
+            select json_object_agg(id, row_to_json(sizeAndQuant))
+            FROM (
+              SELECT size, quantity
+              FROM skus
+              WHERE styleid=styles.id
+              order by id asc
+            ) sizeAndQuant
+          ) as skus
+
+      FROM styles
+      WHERE product_id=$1
+
+  ) stylesList))
+
+ from products
+ WHERE products.id=$1;`
+
 
   db.query(text, params, (error, data) => {
     if (error) {
       res.set('status', 500).send(error)
     } else {
-      //do something
+      res.set('status', 200).send(data.rows[0].json_build_object)
     }
   })
 })
@@ -59,20 +114,6 @@ app.get('/products/:product_id', (req, res) => {
     ))
     from products
     WHERE products.id=$1`;
-
-
-
-  // `SELECT json_build_object( \
-  //   "id", products.id, \
-  //   "name", products.name, \
-  //   "slogan", products.slogan,\
-  //   "description", products.description, \
-  //   "category", products.category, \
-  //   "default_price", products.default_price, \
-  //   "features", (SELECT json_agg(row_to_json(features)) FROM (SELECT feature, value FROM "features" where product_id=1) AS features)) \
-  //   from products \
-  //   WHERE products.id=$1`;
-
 
   db.query(text, params, (error, data) => {
     if (error) {
