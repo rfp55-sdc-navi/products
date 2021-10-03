@@ -34,50 +34,51 @@ app.get('/products/:product_id/styles', (req, res) => {
   var params = [id]
   var text =
 `select json_build_object(
-  'product_id', id,
+  'product_id',
+  'id',
   'results', (select array_to_json(array_agg(row_to_json(stylesList)))
-  FROM (
+    FROM (
 
-    select
-    id,
-    name,
-    original_price,
-    sale_price,
+      SELECT
+      id AS style_id,
+      name,
+      original_price,
 
-    (select CASE WHEN default_style = 0
-          THEN 'false' ELSE 'true'
+      (SELECT CASE WHEN sale_price = 'null'
+        THEN NULL
         END
-     ) AS default_style,
+      ) AS sale_price,
 
-      (
-        select array_to_json(array_agg(row_to_json(urls)))
+      (SELECT CASE WHEN default_style = 0
+          THEN 'false'
+          ELSE 'true'
+          END
+      ) AS default_style,
+
+      (SELECT array_to_json(array_agg(row_to_json(urls)))
         FROM (
-
           SELECT thumbnail_url, url
           FROM photos
           WHERE styleid=styles.id
-          order by id asc
-
+          ORDER BY id ASC
         ) urls
+      ) AS photos,
 
-      ) as photos,
+      (SELECT json_object_agg(id, row_to_json(sizeAndQuant))
+        FROM (
+          SELECT size, quantity
+          FROM skus
+          WHERE styleid=styles.id
+          ORDER BY id ASC
+        ) sizeAndQuant
+      ) AS skus
 
-        (
-          select json_object_agg(id, row_to_json(sizeAndQuant))
-          FROM (
-            SELECT size, quantity
-            FROM skus
-            WHERE styleid=styles.id
-            order by id asc
-          ) sizeAndQuant
-        ) as skus
+      FROM styles
+      WHERE product_id=$1
 
-    FROM styles
-    WHERE product_id=$1
+  ) stylesList))
 
-) stylesList))
-
-from products
+FROM products
 WHERE products.id=$1;
 `
 
