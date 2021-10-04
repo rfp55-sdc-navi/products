@@ -35,8 +35,7 @@ app.get('/products/:product_id/styles', (req, res) => {
   var text =
   `
   SELECT json_build_object(
-  'product_id',
-  'id',
+  'product_id', id,
   'results', (select array_to_json(array_agg(row_to_json(stylesList)))
     FROM (
 
