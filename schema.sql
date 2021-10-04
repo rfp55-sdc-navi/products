@@ -91,3 +91,14 @@ COPY Photos from '/Users/caitlinkinney/Desktop/HackReactor/SDC/Raw_data/photos.c
 COPY Related from '/Users/caitlinkinney/Desktop/HackReactor/SDC/Raw_data/related.csv' DELIMITER ',' CSV HEADER;
 COPY Cart from '/Users/caitlinkinney/Desktop/HackReactor/SDC/Raw_data/cart.csv' DELIMITER ',' CSV HEADER;
 COPY Skus from '/Users/caitlinkinney/Desktop/HackReactor/SDC/Raw_data/skus.csv' DELIMITER ',' CSV HEADER;
+
+-- show all indexes
+-- Select *  from pg_indexes where tablename not like ‘pg%’;
+-- CREATE INDEX indexName ON tableName (columnName);
+
+ CREATE INDEX product_id_styles ON styles (product_id);
+ CREATE INDEX product_id_features ON features (product_id);
+ CREATE INDEX styleid_photos ON photos (styleid);
+ CREATE INDEX current_product_related ON related (current_product);
+ CREATE INDEX product_id_cart ON cart (product_id);
+ CREATE INDEX styleid_skus ON skus (styleid);

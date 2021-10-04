@@ -33,7 +33,8 @@ app.get('/products/:product_id/styles', (req, res) => {
   var id = req.params.product_id;
   var params = [id]
   var text =
-`select json_build_object(
+  `
+  SELECT json_build_object(
   'product_id',
   'id',
   'results', (select array_to_json(array_agg(row_to_json(stylesList)))

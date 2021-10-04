@@ -29,6 +29,7 @@ module.exports = {
         console.log('error in client.query', error)
         callback(error)
       } else {
+        // console.log('query results', data.rows[0])
         callback(null, data)
       }
     })
