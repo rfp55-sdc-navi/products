@@ -4,7 +4,7 @@ const { Pool, Client } = require('pg')
 
 const client = new Client({
   host: 'localhost',
-  user: 'caitlinkinney',
+  user: config.user,
   database: 'products',
   port: 5432,
 })
@@ -17,10 +17,6 @@ const connection = client.connect((err) => {
   }
 })
 
-// client.query('SELECT NOW()', (err, res) => {
-//   console.log(err, res)
-//   client.end()
-// })
 
 module.exports = {
   query: (text, params, callback) => {
@@ -29,24 +25,8 @@ module.exports = {
         console.log('error in client.query', error)
         callback(error)
       } else {
-        // console.log('query results', data.rows[0])
         callback(null, data)
       }
     })
   },
 }
-
-/* example...
-const Pool = require('pg').Pool;
-
-const pool = new Pool({
-  user: 'caitlinkinney',
-  database: 'products',
-  //password?
-  host: 'localhost',
-  port: 5432
-});
-
-module.exports = pool;
-
-*/

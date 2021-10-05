@@ -5,3 +5,4 @@ Raw_data
 .csv
 .newrelic_agent_log
 .newrelic.js
+node_modules

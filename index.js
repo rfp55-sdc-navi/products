@@ -1,8 +1,10 @@
+require('newrelic');
 const express = require('express');
 // const queries = require('./models/models.js');
 const db = require('./db/database.js')
 const app = express();
 const port = 5000;
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
