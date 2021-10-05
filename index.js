@@ -1,8 +1,10 @@
+require('newrelic');
 const express = require('express');
 // const queries = require('./models/models.js');
 const db = require('./db/database.js')
 const app = express();
 const port = 5000;
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -35,8 +37,7 @@ app.get('/products/:product_id/styles', (req, res) => {
   var text =
   `
   SELECT json_build_object(
-  'product_id',
-  'id',
+  'product_id', id,
   'results', (select array_to_json(array_agg(row_to_json(stylesList)))
     FROM (
 
