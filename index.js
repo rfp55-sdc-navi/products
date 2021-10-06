@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
+app.get('/loaderio-b4fc371da6dcd88dfb458406bc65196c/', (req, res) => {
+  res.send('loaderio-b4fc371da6dcd88dfb458406bc65196c')
+})
+
 app.get('/products/:product_id/related', (req, res) => {
   var id = req.params.product_id;
   var params = [id];
