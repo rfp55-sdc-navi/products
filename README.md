@@ -1,5 +1,5 @@
-# Hack Reactor System Design Capstone
-## Retail Product Page API
+# Retail Product Page API
+## About The Project
 The objective of this project was to separate several API endpoints from a monolithic retail product page structure and transition to a micro-services based architecture. This repository contains the implementation of four product-overview endpoints: product list, individual product characteristics, product styles, related products.
 
 Key performance indicators were that under load, each endpoint maintain at least 100 RPS and latency less than 2,000ms, with less than a 1% error rate.
